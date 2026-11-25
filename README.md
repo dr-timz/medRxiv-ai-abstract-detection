@@ -13,12 +13,12 @@ Développement et validation de pipelines NLP — combinant **Machine Learning c
 
 ## Méthodologie
 
-### 1. Approche classique (`01_ml_tfidf_stylometry.ipynb`)
+### 1. Approche classique (`script_ML.ipynb`)
 * **Ingénierie de variables :** 32 variables stylométriques (longueur et régularité des phrases, richesse lexicale TTR/hapax, score de Flesch, ponctuation, résultats chiffrés, marqueurs typographiques et lexique typique des LLM).
 * **Modèles de base (validation croisée stratifiée 5 plis) :** Naive Bayes (mots), TF-IDF mots (1–2 grammes) + Régression Logistique, TF-IDF caractères (1–4 grammes, sensible à la casse) + Régression Logistique, et `HistGradientBoostingClassifier` sur les variables stylométriques.
 * **Stacking (Super-Learner) :** `HistGradientBoostingClassifier` combinant les probabilités hors pli des deux modèles TF-IDF et les 32 variables stylométriques, validé par **validation croisée imbriquée**.
 
-### 2. Modèles de langage neuronaux (`02_deep_learning_roberta_gpt2.ipynb`)
+### 2. Modèles de langage neuronaux (`scripy_DL.ipynb`)
 * **Découpage sans fuite :** 6 039 abstracts d'entraînement, 671 de réglage (choix de la meilleure époque et des seuils) et 1 678 de validation indépendante.
 * **Approche A (Perplexité GPT-2) :** Extraction de 5 indicateurs de prévisibilité (log-perplexité, écart-type / *burstiness*, surprise maximale, part top-1 et top-10) sans réentraînement, suivie d'une Régression Logistique.
 * **Approche B (Fine-tuning `roberta-base`) :** Entraînement sur GPU en demi-précision (`float16`, `max_len=512`, `AdamW`, `lr=2e-5`, 3 époques, meilleure époque = 2) avec perte `CrossEntropyLoss` pondérée pour gérer le déséquilibre des classes.
